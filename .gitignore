@@ -1,0 +1,21 @@
+# Python & Jupyter
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.ipynb_checkpoints/
+
+# Raw Datasets (never commit large CSVs)
+data/*.csv
+data/*.zip
+
+# Saved Model Binaries
+*.h5
+*.keras
+*.pkl
+*.joblib
+
+# OS & IDEs
+.DS_Store
+.vscode/
+.idea/
