@@ -159,7 +159,7 @@ python app/demo.py
 | **Yousef Gamal** | **Tech Lead & Baseline/Analysis Engineer** — Repo setup, `configs/`, PR reviews, `01_eda.ipynb`, trivial & linear baselines, Model A, final 3-seed run | **Roles 1 & 3** | [@tarnished693-max](https://github.com/tarnished693-max) |
 | **Esraa Gamal** | **Data Engineer** — `src/data.py`, leak-free splits, scaling/encoding, imbalance ablations | **Role 2** | [@esraagamal11mohamed_cell](https://github.com/esraagamal11mohamed_cell) |
 | **Jessica Salah** | **Model Architect** — `src/models.py` (Models B & C), hand parameter counts, regularization, `GradientTape` | **Role 4** | [@jessicasaeed12](https://github.com/jessicasaeed12) |
-| **TBD** | **Experimentation Engineer** — `src/train.py`, CSV experiment tracking, LR/batch/optimizer studies | **Role 5** | `@username` |
+| **Ahmed Abdelsalam** | **Experimentation Engineer** — `src/train.py`, CSV experiment tracking, LR/batch/optimizer studies | **Role 5** | [@AhmedGenady.00](https://github.com/AhmedGenady.00) |
 | **Jana Amr** | **Evaluation & Deployment Engineer** — `src/evaluate.py`, `src/predict.py`, 20-case error analysis, `app/` demo | **Role 6** | [@Janaelsh3rawy](https://github.com/Janaelsh3rawy) |
 
 ---
