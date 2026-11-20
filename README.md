@@ -48,7 +48,7 @@
 | :--- | :--- |
 | **Target User** | Retail bank telemarketing campaign managers prioritizing outbound client calls |
 | **Dataset** | [UCI Bank Marketing (`bank-additional-full.csv`)](https://archive.ics.uci.edu/dataset/222/bank+marketing) — `41,188` rows, `19` pre-call features (`duration` dropped) |
-| **Input & Output** | Scaled numeric + one-hot encoded categorical vector $ightarrow$ Single `sigmoid` probability unit |
+| **Input & Output** | Scaled numeric + one-hot encoded categorical vector $\rightarrow$ Single `sigmoid` probability unit |
 | **Loss Function** | Binary Cross-Entropy (`binary_crossentropy`) with balanced class weights |
 | **Primary Metric** | **Positive-Class F1-Score, Recall & PR-AUC** (preferred over accuracy due to 88.7% majority skew) |
 | **Error Cost Trade-off** | False Negatives lose potential term deposit revenue; False Positives cost minor call-agent time |
@@ -117,7 +117,7 @@ Gradio Live Demo]
 git clone https://github.com/tarnished693-max/bank-marketing-mlp.git
 cd bank-marketing-mlp
 python -m venv .venv
-.venv\Scriptsctivate
+.venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
