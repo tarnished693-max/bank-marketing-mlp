@@ -157,10 +157,10 @@ python app/demo.py
 | Team Member | Role & Responsibilities | Assigned Work Packages | GitHub |
 | :--- | :--- | :---: | :--- |
 | **Yousef Gamal** | **Tech Lead & Baseline/Analysis Engineer** — Repo setup, `configs/`, PR reviews, `01_eda.ipynb`, trivial & linear baselines, Model A, final 3-seed run | **Roles 1 & 3** | [@tarnished693-max](https://github.com/tarnished693-max) |
-| **TBD** | **Data Engineer** — `src/data.py`, leak-free splits, scaling/encoding, imbalance ablations | **Role 2** | `@username` |
-| **TBD** | **Model Architect** — `src/models.py` (Models B & C), hand parameter counts, regularization, `GradientTape` | **Role 4** | `@username` |
+| **Esraa Gamal** | **Data Engineer** — `src/data.py`, leak-free splits, scaling/encoding, imbalance ablations | **Role 2** | [@esraagamal11mohamed_cell](https://github.com/esraagamal11mohamed_cell) |
+| **Jessica Salah** | **Model Architect** — `src/models.py` (Models B & C), hand parameter counts, regularization, `GradientTape` | **Role 4** | [@jessicasaeed12](https://github.com/jessicasaeed12) |
 | **TBD** | **Experimentation Engineer** — `src/train.py`, CSV experiment tracking, LR/batch/optimizer studies | **Role 5** | `@username` |
-| **TBD** | **Evaluation & Deployment Engineer** — `src/evaluate.py`, `src/predict.py`, 20-case error analysis, `app/` demo | **Role 6** | `@username` |
+| **Jana Amr** | **Evaluation & Deployment Engineer** — `src/evaluate.py`, `src/predict.py`, 20-case error analysis, `app/` demo | **Role 6** | [@Janaelsh3rawy](https://github.com/Janaelsh3rawy) |
 
 ---
 
