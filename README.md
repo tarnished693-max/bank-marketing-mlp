@@ -6,7 +6,7 @@
 [![scikit-learn](https://img.shields.io/badge/scikit--learn-1.5-F7931E?style=for-the-badge&logo=scikit-learn&logoColor=white)](https://scikit-learn.org/)
 [![Pandas](https://img.shields.io/badge/Pandas-2.2-150458?style=for-the-badge&logo=pandas&logoColor=white)](https://pandas.pydata.org/)
 [![Gradio](https://img.shields.io/badge/Gradio-Live_Demo-FF7C00?style=for-the-badge&logo=gradio&logoColor=white)](https://www.gradio.app/)
-[![Status](https://img.shields.io/badge/Milestone-Week_9_Setup-blueviolet?style=for-the-badge)](#-project-roadmap)
+[![Status](https://img.shields.io/badge/Milestone-Week_10_In_Progress-orange?style=for-the-badge)](#-project-roadmap)
 
 > **End-to-End Supervised Deep Learning Pipeline for Imbalanced Tabular Classification**  
 > **Bank Marketing Term Deposit Predictor** is a modular Multi-Layer Perceptron (MLP) system built on the **UCI Bank Marketing** dataset (`41,188` records). It predicts whether a retail bank client will subscribe to a term deposit (`y = 1`) using pre-call demographic, campaign, and macroeconomic indicators—combining leak-free preprocessing, class-imbalance mitigation, systematic ablation studies, and a live inference interface.
@@ -144,8 +144,8 @@ python app/demo.py
 
 | Milestone | Target | Deliverables | Status |
 | :--- | :---: | :--- | :---: |
-| **1. Proposal & Setup** | Week 9 | Problem formulation, dataset validation, primary metric, modular GitHub repo | ✅ **In Progress** |
-| **2. EDA & Baselines** | Week 10 | Exploratory data analysis notebook, leak-free splits, trivial & linear baselines | ⏳ Planned |
+| **1. Proposal & Setup** | Week 9 | Problem formulation, dataset validation, primary metric, modular GitHub repo | ✅ **Done** |
+| **2. EDA & Baselines** | Week 10 | Exploratory data analysis notebook, leak-free splits, trivial & linear baselines | 🔄 **In Progress** |
 | **3. Neural Models** | Weeks 11–12 | Models A, B, and C implemented in Keras, hand parameter counts, `GradientTape` | ⏳ Planned |
 | **4. Tuning & Ablations** | Week 13 | Hyperparameter studies, 4 ablation experiments, 3-seed run, error analysis | ⏳ Planned |
 | **5. Final Delivery** | Week 14 | Tagged `v1.0` repository, technical report PDF, slides, and live demo | ⏳ Planned |
