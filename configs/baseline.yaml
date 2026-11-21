@@ -1,0 +1,66 @@
+# Baseline Experiment Configuration (AIE231 Project)
+experiment_name: "baseline_model_a"
+author: "Yousef Gamal"
+date: "2026-11-21"
+random_seed: 42
+
+data:
+  raw_path: "data/bank-additional-full.csv"
+  delimiter: ";"
+  target_column: "y"
+  positive_label: "yes"
+  drop_columns:
+    - "duration"  # Critical: Excluded to prevent target leakage
+  split_ratios:
+    train: 0.70
+    val: 0.15
+    test: 0.15
+  stratify: true
+  numeric_features:
+    - "age"
+    - "campaign"
+    - "pdays"
+    - "previous"
+    - "emp.var.rate"
+    - "cons.price.idx"
+    - "cons.conf.idx"
+    - "euribor3m"
+    - "nr.employed"
+  categorical_features:
+    - "job"
+    - "marital"
+    - "education"
+    - "default"
+    - "housing"
+    - "loan"
+    - "contact"
+    - "month"
+    - "day_of_week"
+    - "poutcome"
+
+model:
+  architecture: "model_a"
+  hidden_units: 32
+  activation: "relu"
+  output_activation: "sigmoid"
+
+training:
+  batch_size: 64
+  epochs: 50
+  learning_rate: 0.001
+  optimizer: "adam"
+  loss: "binary_crossentropy"
+  use_class_weights: true
+  early_stopping:
+    monitor: "val_loss"
+    patience: 10
+    restore_best_weights: true
+
+evaluation:
+  metrics:
+    - "accuracy"
+    - "precision"
+    - "recall"
+    - "f1"
+    - "pr_auc"
+    - "roc_auc"
