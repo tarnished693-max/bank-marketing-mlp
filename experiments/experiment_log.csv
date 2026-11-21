@@ -1,0 +1,5 @@
+run_id,date,author,model,imbalance_strategy,class_weight,random_seed,training_time_sec,train_samples,val_accuracy,val_balanced_accuracy,val_neg_recall,val_pos_recall,val_pos_precision,val_pos_f1,val_macro_f1,val_roc_auc,val_pr_auc
+ablation_imb_00_trivial,2026-11-21 21:43,Esraa Gamal,Trivial Baseline (Always No),None (Majority Predictor),,42,0.001,28823,0.8873,0.5,1.0,0.0,0.0,0.0,0.4701,0.5,0.1127
+ablation_imb_01_unweighted,2026-11-21 21:43,Esraa Gamal,Learned Baseline (Logistic Regression),Unweighted (Standard ERM),,42,0.5025,28823,0.8982,0.5964,0.9859,0.2069,0.6516,0.3141,0.6295,0.7937,0.451
+ablation_imb_02_class_weights,2026-11-21 21:43,Esraa Gamal,Learned Baseline (Logistic Regression),Balanced Class Weights,"{0: 0.56, 1: 4.44}",42,0.6898,28823,0.8251,0.7428,0.8491,0.6365,0.3488,0.4507,0.6733,0.7925,0.4428
+ablation_imb_03_oversampling,2026-11-21 21:43,Esraa Gamal,Learned Baseline (Logistic Regression),Random Minority Oversampling (50:50),None (Balanced via Resampling),42,1.3647,51152,0.8271,0.7433,0.8515,0.6351,0.3519,0.4529,0.6751,0.7925,0.4453
