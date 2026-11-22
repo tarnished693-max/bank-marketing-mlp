@@ -129,6 +129,17 @@ pip install -r requirements.txt
 ```powershell
 # Train an experiment configuration and log validation metrics
 python -m src.train --config configs/baseline.yaml
+### Experiment Configuration
+
+The training script supports custom experiment configurations and random seed overrides.
+
+To override the random seed:
+
+```bash
+python -m src.train --config configs/baseline.yaml --seed 123
+```
+
+The random seed helps control experiment reproducibility.
 
 # Evaluate the frozen model on the held-out test set
 python -m src.evaluate --model models/final_mlp.keras
@@ -136,7 +147,12 @@ python -m src.evaluate --model models/final_mlp.keras
 # Run single-sample CLI inference or launch the Gradio web demo
 python -m src.predict --input configs/sample_client.json
 python app/demo.py
+
 ```
+
+```
+
+The random seed helps control experiment reproducibility.
 
 ---
 
