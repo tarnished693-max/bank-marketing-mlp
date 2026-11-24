@@ -1,0 +1,15 @@
+{
+  "name": "baseline_trivial",
+  "description": "Trivial Majority-Class Classifier predicting class 0 ('no') unconditionally (Section 3.3)",
+  "author": "ExperimentationEngineer",
+  "seed": 42,
+  "model_type": "Trivial_Majority_Class",
+  "hyperparameters": {
+    "strategy": "most_frequent",
+    "target_class": 0
+  },
+  "metrics": {
+    "primary": "val_pr_auc",
+    "monitored": ["loss", "accuracy", "precision", "recall", "f1_score", "roc_auc", "pr_auc"]
+  }
+}

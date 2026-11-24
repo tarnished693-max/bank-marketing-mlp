@@ -1,0 +1,18 @@
+{
+  "name": "baseline_logistic_regression",
+  "description": "Simple Learned Baseline: L2-Regularized Logistic Regression (Section 3.3)",
+  "author": "ExperimentationEngineer",
+  "seed": 42,
+  "model_type": "LogisticRegression_Standard",
+  "hyperparameters": {
+    "penalty": "l2",
+    "C": 1.0,
+    "solver": "lbfgs",
+    "max_iter": 1000,
+    "class_weight": null
+  },
+  "metrics": {
+    "primary": "val_pr_auc",
+    "monitored": ["loss", "accuracy", "precision", "recall", "f1_score", "roc_auc", "pr_auc"]
+  }
+}

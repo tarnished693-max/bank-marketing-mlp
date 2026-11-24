@@ -1,0 +1,44 @@
+{
+  "audit_timestamp": "2026-11-24T10:45:00",
+  "dataset": "UCI Bank Marketing (bank-full.csv)",
+  "auditor": "ExperimentationEngineer",
+  "course": "AIE231 Neural Networks Project - Alamein International University",
+  "dataset_rows": 45211,
+  "raw_features_count": 16,
+  "encoded_features_count": 48,
+  "split_ratios": {
+    "train": 0.70,
+    "val": 0.15,
+    "test": 0.15
+  },
+  "split_counts": {
+    "train_samples": 31647,
+    "val_samples": 6782,
+    "test_samples": 6782
+  },
+  "stratification": {
+    "overall_positive_rate": 0.1170,
+    "train_positive_rate": 0.1170,
+    "val_positive_rate": 0.1171,
+    "test_positive_rate": 0.1169,
+    "stratification_passed": true,
+    "notes": "Target class imbalance (~88.3% 'no' vs ~11.7% 'yes') strictly maintained across all 3 splits."
+  },
+  "disjoint_check": {
+    "train_val_overlap": 0,
+    "train_test_overlap": 0,
+    "val_test_overlap": 0,
+    "is_disjoint": true,
+    "notes": "Zero sample or index duplication across sets."
+  },
+  "leakage_verification": {
+    "train_mean_is_zero": true,
+    "train_std_is_one": true,
+    "val_mean_differs_from_train": true,
+    "scaler_fitted_on_train_only": true,
+    "test_set_sealed": true,
+    "leak_free_confirmed": true,
+    "notes": "StandardScaler and OneHotEncoder were fitted strictly on Train (31,647 rows) and applied via transform() to Val and Test."
+  },
+  "status": "PASSED"
+}
