@@ -1,0 +1,20 @@
+{
+  "ablation_name": "dropout_ablation",
+  "question": "What is the impact of Dropout regularization on tabular MLP generalization?",
+  "author": "ExperimentationEngineer",
+  "base_config": "base_reference",
+  "runs": [
+    {
+      "run_id": "ABL-DROP-001",
+      "name": "without_dropout",
+      "dropout_rate": 0.0,
+      "notes": "Ablation control: MLP trained without dropout (inspect potential overfitting)"
+    },
+    {
+      "run_id": "ABL-DROP-002",
+      "name": "with_dropout_0.3",
+      "dropout_rate": 0.3,
+      "notes": "Ablation test: MLP trained with dropout rate 0.3 after each hidden layer"
+    }
+  ]
+}

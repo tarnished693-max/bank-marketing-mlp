@@ -1,0 +1,34 @@
+{
+  "name": "base_reference",
+  "description": "Fixed reference MLP configuration for One-Factor-At-A-Time (OFAT) tuning and ablations",
+  "author": "ExperimentationEngineer",
+  "seed": 42,
+  "data": {
+    "train_ratio": 0.70,
+    "val_ratio": 0.15,
+    "test_ratio": 0.15,
+    "stratify": true
+  },
+  "architecture": {
+    "model_type": "mlp",
+    "hidden_units": [128, 64],
+    "activation": "relu",
+    "dropout_rate": 0.3,
+    "use_batch_norm": false,
+    "output_activation": "sigmoid"
+  },
+  "training": {
+    "optimizer": "adam",
+    "learning_rate": 0.001,
+    "momentum": 0.0,
+    "batch_size": 64,
+    "epochs": 50,
+    "early_stopping_patience": 10,
+    "early_stopping_metric": "val_loss",
+    "use_class_weights": false
+  },
+  "metrics": {
+    "primary": "val_pr_auc",
+    "monitored": ["loss", "accuracy", "pr_auc", "roc_auc", "f1_score", "recall", "precision"]
+  }
+}

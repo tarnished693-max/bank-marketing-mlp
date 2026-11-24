@@ -1,194 +1,128 @@
-# Bank Marketing Term Deposit Predictor 🏦
-
-[![Python](https://img.shields.io/badge/Python-3.10+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
-[![TensorFlow](https://img.shields.io/badge/TensorFlow-2.16-FF6F00?style=for-the-badge&logo=tensorflow&logoColor=white)](https://www.tensorflow.org/)
-[![Keras](https://img.shields.io/badge/Keras-MLP-D00000?style=for-the-badge&logo=keras&logoColor=white)](https://keras.io/)
-[![scikit-learn](https://img.shields.io/badge/scikit--learn-1.5-F7931E?style=for-the-badge&logo=scikit-learn&logoColor=white)](https://scikit-learn.org/)
-[![Pandas](https://img.shields.io/badge/Pandas-2.2-150458?style=for-the-badge&logo=pandas&logoColor=white)](https://pandas.pydata.org/)
-[![Gradio](https://img.shields.io/badge/Gradio-Live_Demo-FF7C00?style=for-the-badge&logo=gradio&logoColor=white)](https://www.gradio.app/)
-[![Status](https://img.shields.io/badge/Milestone-Week_10_In_Progress-orange?style=for-the-badge)](#-project-roadmap)
-
-> **End-to-End Supervised Deep Learning Pipeline for Imbalanced Tabular Classification**  
-> **Bank Marketing Term Deposit Predictor** is a modular Multi-Layer Perceptron (MLP) system built on the **UCI Bank Marketing** dataset (`41,188` records). It predicts whether a retail bank client will subscribe to a term deposit (`y = 1`) using pre-call demographic, campaign, and macroeconomic indicators—combining leak-free preprocessing, class-imbalance mitigation, systematic ablation studies, and a live inference interface.
+# Bank Marketing Term Deposit Prediction (Deep MLP)
+**Course**: AIE231 - Neural Networks  
+**Institution**: Alamein International University, Faculty of Computer Science & Engineering  
+**Track**: Tabular Deep Learning (Multi-Layer Perceptron)  
 
 ---
 
-## 📋 Table of Contents
-- [Bank Marketing Term Deposit Predictor 🏦](#bank-marketing-term-deposit-predictor-)
-  - [📋 Table of Contents](#-table-of-contents)
-  - [✨ Key Highlights](#-key-highlights)
-  - [🎯 Problem Formulation & Metrics](#-problem-formulation--metrics)
-  - [🏗 Architecture & ML Pipeline](#-architecture--ml-pipeline)
-    - [Repository Structure](#repository-structure)
-    - [End-to-End Pipeline Diagram](#end-to-end-pipeline-diagram)
-  - [🚀 Quick Start & Execution](#-quick-start--execution)
-    - [Prerequisites](#prerequisites)
-    - [1. Clone & Install Dependencies](#1-clone--install-dependencies)
-    - [2. Configure Dataset](#2-configure-dataset)
-    - [3. Run Training, Evaluation & Demo](#3-run-training-evaluation--demo)
-  - [📅 Project Roadmap](#-project-roadmap)
-  - [👥 Team Members & Contribution Matrix](#-team-members--contribution-matrix)
-  - [🤝 Git Workflow](#-git-workflow)
+## 1. Problem Statement & Overview
+This project addresses direct telemarketing campaign optimization for a Portuguese retail bank. The goal is to predict whether a prospective client will subscribe to a long-term deposit (`y` = `yes` / `no`) based on 16 attributes covering demographic, economic, and campaign history features.
+
+Because marketing campaigns suffer from severe class imbalance (~88.3% "no" vs ~11.7% "yes"), trivial accuracy is an invalid objective. The project employs a systematically tuned and regularized Multi-Layer Perceptron (MLP) evaluated primarily on **Precision-Recall AUC (PR-AUC)** and **F1-Score**.
+
+- **Dataset**: [UCI Machine Learning Repository - Bank Marketing (2014)](https://archive.ics.uci.edu/dataset/222/bank+marketing)
+- **Instances**: 45,211 rows, 16 features.
 
 ---
 
-## ✨ Key Highlights
-
-- **Modular Engineering Lifecycle**: Clean separation between data preprocessing (`src/data.py`), neural architectures (`src/models.py`), experiment execution (`src/train.py`), evaluation (`src/evaluate.py`), and single-sample inference (`src/predict.py`).
-- **Strict Zero-Leakage Discipline**: Excludes the post-call `duration` feature prior to modeling, enforces stratified `70/15/15` Train/Validation/Test splits before any transformation, and fits `StandardScaler` and `OneHotEncoder` strictly on training folds.
-- **Imbalance-Aware Optimization**: Addresses the severe `~88.7% No` vs. `~11.3% Yes` class skew using balanced class weighting and positive-class F1 / Recall / PR-AUC tracking.
-- **Progressive MLP Architectures**: Compares trivial and linear baselines against three Keras MLP architectures of increasing complexity, backed by hand-verified parameter counts and a custom `tf.GradientTape` training step.
-- **Reproducible Experiment Tracking**: Logs every run, random seed, hyperparameter, and validation metric automatically into `experiments/experiment_log.csv`.
-
----
-
-## 🎯 Problem Formulation & Metrics
-
-| Component | Specification |
-| :--- | :--- |
-| **Target User** | Retail bank telemarketing campaign managers prioritizing outbound client calls |
-| **Dataset** | [UCI Bank Marketing (`bank-additional-full.csv`)](https://archive.ics.uci.edu/dataset/222/bank+marketing) — `41,188` rows, `19` pre-call features (`duration` dropped) |
-| **Input & Output** | Scaled numeric + one-hot encoded categorical vector $\rightarrow$ Single `sigmoid` probability unit |
-| **Loss Function** | Binary Cross-Entropy (`binary_crossentropy`) with balanced class weights |
-| **Primary Metric** | **Positive-Class F1-Score, Recall & PR-AUC** (preferred over accuracy due to 88.7% majority skew) |
-| **Error Cost Trade-off** | False Negatives lose potential term deposit revenue; False Positives cost minor call-agent time |
-
-> [!IMPORTANT]
-> **Target Leakage Prevention:** The raw dataset contains a `duration` column (last contact duration in seconds), which is unknown before placing a call and strongly correlates with the target. It is dropped immediately upon loading.
-
----
-
-## 🏗 Architecture & ML Pipeline
-
-### Repository Structure
-
-```text
+## 2. Repository Structure (Modular Architecture)
+```
 bank-marketing-mlp/
-├── README.md              # Project overview, setup instructions, and team matrix
-├── requirements.txt       # Pinned Python, TensorFlow, and scikit-learn dependencies
-├── configs/               # YAML experiment configurations and sample inference payloads
-├── data/                  # Dataset setup instructions (raw CSVs excluded via .gitignore)
-├── notebooks/             # 01_eda.ipynb (EDA & baselines), 02_results.ipynb (learning curves)
-├── src/                   # Core modular Python package
-│   ├── data.py            # Leak-free splitting, scaling, encoding, and class weights
-│   ├── models.py          # Model A, Model B, Model C architectures & GradientTape step
-│   ├── train.py           # Training loop, callbacks, and CSV experiment logger
-│   ├── evaluate.py        # Held-out test metrics, confusion matrix, ROC/PR & error analysis
-│   └── predict.py         # Single-sample inference pipeline with latency measurement
-├── experiments/           # experiment_log.csv and saved training/validation plots
-├── models/                # Final saved Keras model (.keras) and fitted preprocessor (.joblib)
-├── app/                   # Interactive Gradio live inference web interface
-└── report/                # Technical report PDF and presentation slides
-```
-
-### End-to-End Pipeline Diagram
-
-```mermaid
-flowchart LR
-    A[Raw CSV
-41,188 rows] --> B[Drop 'duration'
-& Duplicates]
-    B --> C[Stratified Split
-70% Train / 15% Val / 15% Test]
-    C --> D[Fit Preprocessor on Train Only
-StandardScaler + OneHotEncoder]
-    D --> E[Baselines
-Majority & Logistic]
-    D --> F[Keras MLPs
-Models A, B & C]
-    E & F --> G[Validation Tuning &
-4 Ablation Studies]
-    G --> H[Held-Out Test Eval &
-20-Case Error Analysis]
-    H --> I[Saved Model +
-Gradio Live Demo]
+├── README.md                  # Project overview, installation, and instructions
+├── requirements.txt           # Pinned dependencies
+├── .gitignore                 # Excludes raw data and virtual environment
+├── configs/                   # Experiment JSON configs (base reference, tuning, ablations)
+│   ├── base_reference.json
+│   ├── tuning_learning_rate.json
+│   ├── tuning_batch_size.json
+│   ├── tuning_optimizer.json
+│   ├── ablation_dropout.json
+│   ├── ablation_class_weights.json
+│   ├── ablation_activation.json
+│   ├── ablation_batch_norm.json
+│   └── multi_seed.json
+├── data/                      # Dataset documentation and download script
+│   ├── README.md
+│   └── download_data.py
+├── notebooks/                 # Demonstration & EDA notebooks
+│   └── 00_experimentation_framework_demo.ipynb
+├── src/                       # Modular source code
+│   ├── __init__.py
+│   ├── experiment_tracker.py  # Central CSV logger & Keras tracking callback
+│   ├── plot_curves.py         # Learning curve generator with overfitting detection
+│   └── experiment_runner.py   # CLI runner for configs and sweeps
+├── experiments/               # Experiment logs and artifact figures
+│   ├── README.md              # Logging conventions and schema guide
+│   ├── experiments.csv        # Centralized audit log of all runs
+│   └── curves/                # Exported publication-ready curve plots
+├── models/                    # Saved model artifacts (.keras)
+├── app/                       # Live inference demo application
+├── report/                    # Final PDF technical report and presentation slides
+└── docs/                      # Work package proposals & defense guides
+    ├── week9_experimentation_proposal.md
+    └── defense_qa_guide.md
 ```
 
 ---
 
-## 🚀 Quick Start & Execution
+## 3. Installation & Quickstart
 
-### Prerequisites
-- **Python 3.10** or **3.11**: `python --version`
-- **Git**: `git --version`
-
-### 1. Clone & Install Dependencies
-```powershell
+### 3.1 Clone and Setup Environment
+```bash
 git clone https://github.com/tarnished693-max/bank-marketing-mlp.git
 cd bank-marketing-mlp
-python -m venv .venv
-.venv\Scripts\activate
+python -m venv venv
+# On Windows:
+.\venv\Scripts\activate
+# On Linux / macOS:
+source venv/bin/activate
+
 pip install -r requirements.txt
 ```
 
-### 2. Configure Dataset
-1. Download and extract `bank-additional.zip` from the [UCI Machine Learning Repository](https://archive.ics.uci.edu/dataset/222/bank+marketing).
-2. Place `bank-additional-full.csv` inside `data/bank-additional-full.csv` (ignored by Git automatically).
-
-### 3. Run Training, Evaluation & Demo
-```powershell
-# Train an experiment configuration and log validation metrics
-python -m src.train --config configs/baseline.yaml
-### Experiment Configuration
-
-The training script supports custom experiment configurations and random seed overrides.
-
-To override the random seed:
-
+### 3.2 Download Dataset
 ```bash
-python -m src.train --config configs/baseline.yaml --seed 123
+python data/download_data.py
 ```
-
-The random seed helps control experiment reproducibility.
-
-# Evaluate the frozen model on the held-out test set
-python -m src.evaluate --model models/final_mlp.keras
-
-# Run single-sample CLI inference or launch the Gradio web demo
-python -m src.predict --input configs/sample_client.json
-python app/demo.py
-
-```
-
-```
-
-The random seed helps control experiment reproducibility.
 
 ---
 
-## 📅 Project Roadmap
+## 4. Experimentation & Reproduction Commands
 
-| Milestone | Target | Deliverables | Status |
-| :--- | :---: | :--- | :---: |
-| **1. Proposal & Setup** | Week 9 | Problem formulation, dataset validation, primary metric, modular GitHub repo | ✅ **Done** |
-| **2. EDA & Baselines** | Week 10 | Exploratory data analysis notebook, leak-free splits, trivial & linear baselines | 🔄 **In Progress** |
-| **3. Neural Models** | Weeks 11–12 | Models A, B, and C implemented in Keras, hand parameter counts, `GradientTape` | ⏳ Planned |
-| **4. Tuning & Ablations** | Week 13 | Hyperparameter studies, 4 ablation experiments, 3-seed run, error analysis | ⏳ Planned |
-| **5. Final Delivery** | Week 14 | Tagged `v1.0` repository, technical report PDF, slides, and live demo | ⏳ Planned |
-
----
-
-## 👥 Team Members & Contribution Matrix (5-Member Squad)
-
-| Team Member | Role & Responsibilities | Assigned Work Packages | GitHub |
-| :--- | :--- | :---: | :--- |
-| **Yousef Gamal** | **Tech Lead & Baseline/Analysis Engineer** — Repo setup, `configs/`, PR reviews, `01_eda.ipynb`, trivial & linear baselines, Model A, final 3-seed run | **Roles 1 & 3** | [@tarnished693-max](https://github.com/tarnished693-max) |
-| **Esraa Gamal** | **Data Engineer** — `src/data.py`, leak-free splits, scaling/encoding, imbalance ablations | **Role 2** | [@esraagamal11mohamed-cell](https://github.com/esraagamal11mohamed-cell) |
-| **Jessica Salah** | **Model Architect** — `src/models.py` (Models B & C), hand parameter counts, regularization, `GradientTape` | **Role 4** | [@jessicasaeed12](https://github.com/jessicasaeed12) |
-| **Ahmed Abdelsalam** | **Experimentation Engineer** — `src/train.py`, CSV experiment tracking, LR/batch/optimizer studies | **Role 5** | [@ahmdjnydy479-code](https://github.com/ahmdjnydy479-code) |
-| **Jana Amr** | **Evaluation & Deployment Engineer** — `src/evaluate.py`, `src/predict.py`, 20-case error analysis, `app/` demo | **Role 6** | [@Janaelsh3rawy](https://github.com/Janaelsh3rawy) |
-
----
-
-## 🤝 Git Workflow
-
-Direct pushing to the `main` branch is **restricted**. All team members work on isolated feature branches and merge via reviewed Pull Requests:
-
-```powershell
-git checkout -b feature/your-feature-name
-# Implement and verify your changes
-git add .
-git commit -m "feat(scope): concise description of changes"
-git push origin feature/your-feature-name
-# Open a Pull Request on GitHub for peer review
+### 4.1 Run the Base Reference Model
+```bash
+python src/experiment_runner.py --config configs/base_reference.json --run-id EXP-REF-001
 ```
+
+### 4.2 Run Hyperparameter Sweeps (One-Factor-At-A-Time)
+- **Learning Rate Study** (1e-4 vs 1e-3 vs 1e-2):
+  ```bash
+  python src/experiment_runner.py --sweep lr
+  ```
+- **Batch Size Study** (32 vs 64 vs 128):
+  ```bash
+  python src/experiment_runner.py --sweep batch_size
+  ```
+- **Optimizer Study** (Adam vs Vanilla SGD vs SGD with Momentum):
+  ```bash
+  python src/experiment_runner.py --sweep optimizer
+  ```
+
+### 4.3 Run Ablation Studies
+Executes the 4 ablation studies (Dropout, Class Weights, Activation Functions, Batch Normalization):
+```bash
+python src/experiment_runner.py --sweep ablations
+```
+
+### 4.4 Run Multi-Seed Verification (3 Seeds)
+```bash
+python src/experiment_runner.py --sweep multi_seed
+```
+
+---
+
+## 5. Experiment Tracking Log Sample (`experiments/experiments.csv`)
+All runs automatically log to `experiments/experiments.csv` with the following schema:
+- `run_id`, `date`, `author`, `model_name`, `learning_rate`, `batch_size`, `optimizer`, `hidden_units`, `activation`, `dropout_rate`, `use_batch_norm`, `use_class_weights`, `random_seed`, `epochs_trained`, `training_time_sec`, `total_params`, `trainable_params`, `train_loss`, `val_loss`, `train_pr_auc`, `val_pr_auc`, `val_roc_auc`, `val_f1_score`, `val_recall`, `val_precision`, `notes`, `curve_path`.
+
+---
+
+## 6. Team Role Allocation (AIE231 Specification)
+| Role | Member / Work Package |
+|---|---|
+| **Tech Lead** | Repository structure, integration, code review, 3-seed final model |
+| **Data Engineer** | Data cleaning, leak-free preprocessing, class imbalance handling |
+| **Baseline Engineer** | EDA, trivial baseline, logistic regression baseline |
+| **Model Architect** | MLP models (Shallow, Deep, Tuned), hand parameter counts, GradientTape |
+| **Experimentation Engineer** | **Hyperparameter tuning, experiment tracker, learning-curve plots, OFAT sweeps** |
+| **Deployment Engineer** | Evaluation metrics, error analysis, predict.py, demo application |

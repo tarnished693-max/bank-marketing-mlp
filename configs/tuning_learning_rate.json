@@ -1,0 +1,33 @@
+{
+  "study_name": "learning_rate_study",
+  "factor": "learning_rate",
+  "description": "One-Factor-At-A-Time tuning for learning rate (3 values: 1e-4, 1e-3, 1e-2) with all other factors fixed",
+  "author": "ExperimentationEngineer",
+  "base_config": "base_reference",
+  "runs": [
+    {
+      "run_id": "TUNE-LR-001",
+      "name": "lr_1e-4",
+      "learning_rate": 0.0001,
+      "optimizer": "adam",
+      "batch_size": 64,
+      "notes": "Low learning rate - checks slow convergence or underfitting"
+    },
+    {
+      "run_id": "TUNE-LR-002",
+      "name": "lr_1e-3_reference",
+      "learning_rate": 0.001,
+      "optimizer": "adam",
+      "batch_size": 64,
+      "notes": "Reference learning rate (default Adam standard)"
+    },
+    {
+      "run_id": "TUNE-LR-003",
+      "name": "lr_1e-2",
+      "learning_rate": 0.01,
+      "optimizer": "adam",
+      "batch_size": 64,
+      "notes": "High learning rate - tests training stability and loss divergence"
+    }
+  ]
+}

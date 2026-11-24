@@ -1,0 +1,33 @@
+{
+  "study_name": "optimizer_study",
+  "factor": "optimizer",
+  "description": "Comparative study across 3 optimizers (Adam, SGD, SGD with Momentum 0.9) with all other factors fixed",
+  "author": "ExperimentationEngineer",
+  "base_config": "base_reference",
+  "runs": [
+    {
+      "run_id": "TUNE-OPT-001",
+      "name": "adam_reference",
+      "optimizer": "adam",
+      "learning_rate": 0.001,
+      "momentum": 0.0,
+      "notes": "Adam adaptive learning rate (beta1=0.9, beta2=0.999)"
+    },
+    {
+      "run_id": "TUNE-OPT-002",
+      "name": "vanilla_sgd",
+      "optimizer": "sgd",
+      "learning_rate": 0.01,
+      "momentum": 0.0,
+      "notes": "Standard Stochastic Gradient Descent without momentum"
+    },
+    {
+      "run_id": "TUNE-OPT-003",
+      "name": "sgd_momentum",
+      "optimizer": "sgd",
+      "learning_rate": 0.01,
+      "momentum": 0.9,
+      "notes": "Stochastic Gradient Descent with Nesterov/standard momentum=0.9"
+    }
+  ]
+}

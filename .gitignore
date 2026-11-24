@@ -1,21 +1,36 @@
-# Python & Jupyter
+# Python
 __pycache__/
 *.py[cod]
-.venv/
+*$py.class
+*.so
+.Python
+env/
 venv/
-.ipynb_checkpoints/
+.venv/
+ENV/
 
-# Raw Datasets (never commit large CSVs)
+# Data (Course spec rule: no large raw data in git)
 data/*.csv
 data/*.zip
+!data/README.md
+!data/download_data.py
 
-# Saved Model Binaries
-*.h5
-*.keras
-*.pkl
-*.joblib
+# Models & Weights
+models/*.h5
+models/*.keras
+models/*.joblib
+models/*.pkl
 
-# OS & IDEs
+# OS & IDE
 .DS_Store
+Thumbs.db
 .vscode/
 .idea/
+*.swp
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+*-checkpoint.ipynb
+
+# Logs & temporary files
+*.log

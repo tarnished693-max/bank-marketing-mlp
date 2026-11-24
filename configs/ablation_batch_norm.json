@@ -1,0 +1,20 @@
+{
+  "ablation_name": "batch_norm_ablation",
+  "question": "Does Batch Normalization reduce internal covariate shift and accelerate MLP training on preprocessed tabular data?",
+  "author": "ExperimentationEngineer",
+  "base_config": "base_reference",
+  "runs": [
+    {
+      "run_id": "ABL-BN-001",
+      "name": "without_batch_norm",
+      "use_batch_norm": false,
+      "notes": "Standard Dense + ReLU + Dropout without batch normalization"
+    },
+    {
+      "run_id": "ABL-BN-002",
+      "name": "with_batch_norm",
+      "use_batch_norm": true,
+      "notes": "Dense + BatchNormalization + ReLU + Dropout architecture"
+    }
+  ]
+}

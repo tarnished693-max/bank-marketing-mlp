@@ -1,0 +1,33 @@
+{
+  "study_name": "batch_size_study",
+  "factor": "batch_size",
+  "description": "One-Factor-At-A-Time tuning for batch size (3 values: 32, 64, 128) with all other factors fixed",
+  "author": "ExperimentationEngineer",
+  "base_config": "base_reference",
+  "runs": [
+    {
+      "run_id": "TUNE-BS-001",
+      "name": "batch_32",
+      "batch_size": 32,
+      "learning_rate": 0.001,
+      "optimizer": "adam",
+      "notes": "Small batch size - more stochastic gradient noise, regularizing effect"
+    },
+    {
+      "run_id": "TUNE-BS-002",
+      "name": "batch_64_reference",
+      "batch_size": 64,
+      "learning_rate": 0.001,
+      "optimizer": "adam",
+      "notes": "Reference batch size - standard compromise between speed and gradient quality"
+    },
+    {
+      "run_id": "TUNE-BS-003",
+      "name": "batch_128",
+      "batch_size": 128,
+      "learning_rate": 0.001,
+      "optimizer": "adam",
+      "notes": "Large batch size - smoother gradient estimates, faster epoch wall-time"
+    }
+  ]
+}

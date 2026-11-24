@@ -1,0 +1,20 @@
+{
+  "ablation_name": "class_weights_ablation",
+  "question": "Does loss reweighting improve minority class (deposit subscriber) recall under ~88:12 imbalance?",
+  "author": "ExperimentationEngineer",
+  "base_config": "base_reference",
+  "runs": [
+    {
+      "run_id": "ABL-CW-001",
+      "name": "without_class_weights",
+      "use_class_weights": false,
+      "notes": "Standard Binary Cross-Entropy loss without loss reweighting"
+    },
+    {
+      "run_id": "ABL-CW-002",
+      "name": "with_class_weights_balanced",
+      "use_class_weights": true,
+      "notes": "Cost-sensitive training using compute_class_weight('balanced')"
+    }
+  ]
+}

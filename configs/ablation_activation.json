@@ -1,0 +1,26 @@
+{
+  "ablation_name": "activation_function_ablation",
+  "question": "How do non-linearities (ReLU vs Tanh vs LeakyReLU) affect convergence and loss surface traversal in tabular MLP?",
+  "author": "ExperimentationEngineer",
+  "base_config": "base_reference",
+  "runs": [
+    {
+      "run_id": "ABL-ACT-001",
+      "name": "activation_relu",
+      "activation": "relu",
+      "notes": "Standard non-saturating rectifier activation"
+    },
+    {
+      "run_id": "ABL-ACT-002",
+      "name": "activation_tanh",
+      "activation": "tanh",
+      "notes": "Zero-centered saturating hyperbolic tangent activation"
+    },
+    {
+      "run_id": "ABL-ACT-003",
+      "name": "activation_leaky_relu",
+      "activation": "leaky_relu",
+      "notes": "LeakyReLU with alpha=0.1 to prevent dead neurons"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "study_name": "multi_seed_verification",
+  "description": "Validation set multi-seed stability test (3 seeds) to report mean +/- standard deviation and verify statistical robustness",
+  "author": "ExperimentationEngineer",
+  "base_config": "base_reference",
+  "seeds": [42, 123, 999],
+  "runs": [
+    {
+      "run_id": "SEED-042",
+      "seed": 42,
+      "notes": "Run with random seed 42"
+    },
+    {
+      "run_id": "SEED-123",
+      "seed": 123,
+      "notes": "Run with random seed 123"
+    },
+    {
+      "run_id": "SEED-999",
+      "seed": 999,
+      "notes": "Run with random seed 999"
+    }
+  ]
+}
