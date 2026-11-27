@@ -20,6 +20,7 @@ from sklearn.metrics import f1_score, precision_score, recall_score
 from sklearn.utils.class_weight import compute_class_weight
 
 from src.experiment_tracker import log_run
+from src.models import build_mlp as build_mlp_arch
 from src.plots import plot_learning_curves, plot_sweep
 
 LOG_PATH = "experiments/experiment_log.csv"
@@ -44,15 +45,18 @@ def get_optimizer(name: str, lr: float):
     raise ValueError(f"Unknown optimizer: {name}")
 
 
-def build_mlp(input_dim: int, cfg: dict) -> tf.keras.Model:
-    """Build a binary-classification MLP: Dense(+Dropout) blocks, sigmoid output."""
-    layers = [tf.keras.Input(shape=(input_dim,))]
-    for u in cfg["hidden_units"]:
-        layers.append(tf.keras.layers.Dense(u, activation=cfg["activation"]))
-        if cfg["dropout"] > 0:
-            layers.append(tf.keras.layers.Dropout(cfg["dropout"]))
-    layers.append(tf.keras.layers.Dense(1, activation="sigmoid"))
-    model = tf.keras.Sequential(layers)
+def compile_mlp(input_dim: int, cfg: dict) -> tf.keras.Model:
+    """Build and compile a binary-classification MLP using ``src.models.build_mlp``."""
+    model = build_mlp_arch(
+        input_dim,
+        hidden_units=cfg["hidden_units"],
+        dropout=cfg["dropout"],
+        activation=cfg["activation"],
+        use_batchnorm=cfg.get("use_batchnorm", False),
+        initializer=cfg.get("initializer", "he_normal"),
+        l2=cfg.get("l2", 0.0),
+        name=cfg.get("model", "mlp"),
+    )
     model.compile(
         optimizer=get_optimizer(cfg["optimizer"], cfg["learning_rate"]),
         loss="binary_crossentropy",
@@ -65,7 +69,7 @@ def run_one(cfg: dict, data: tuple, author: str, study: str, tag: str) -> dict:
     """Train one configuration, log it to the CSV, save its curves, return metrics."""
     X_tr, y_tr, X_val, y_val = data
     set_seed(cfg["seed"])
-    model = build_mlp(X_tr.shape[1], cfg)
+    model = compile_mlp(X_tr.shape[1], cfg)
 
     cw = None
     if cfg.get("use_class_weights"):

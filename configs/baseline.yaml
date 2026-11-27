@@ -1,11 +1,11 @@
 # Baseline Experiment Configuration (AIE231 Project)
 experiment_name: "baseline_model_a"
 author: "Yousef Gamal"
-date: "2026-11-21"
+date: "2026-11-27"
 random_seed: 42
 
 data:
-  raw_path: "data/bank-additional-full.csv"
+  raw_path: "data/raw/bank-full.csv"
   delimiter: ";"
   target_column: "y"
   positive_label: "yes"
@@ -18,14 +18,11 @@ data:
   stratify: true
   numeric_features:
     - "age"
+    - "balance"
+    - "day"
     - "campaign"
     - "pdays"
     - "previous"
-    - "emp.var.rate"
-    - "cons.price.idx"
-    - "cons.conf.idx"
-    - "euribor3m"
-    - "nr.employed"
   categorical_features:
     - "job"
     - "marital"
@@ -35,7 +32,6 @@ data:
     - "loan"
     - "contact"
     - "month"
-    - "day_of_week"
     - "poutcome"
 
 model:

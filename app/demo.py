@@ -14,20 +14,17 @@ from src.predict import Predictor  # noqa: E402
 CATEGORICAL = {
     "job": ["admin.", "blue-collar", "entrepreneur", "housemaid", "management", "retired",
             "self-employed", "services", "student", "technician", "unemployed", "unknown"],
-    "marital": ["divorced", "married", "single", "unknown"],
-    "education": ["basic.4y", "basic.6y", "basic.9y", "high.school", "illiterate",
-                  "professional.course", "university.degree", "unknown"],
-    "default": ["no", "yes", "unknown"], "housing": ["no", "yes", "unknown"],
-    "loan": ["no", "yes", "unknown"], "contact": ["cellular", "telephone"],
+    "marital": ["divorced", "married", "single"],
+    "education": ["primary", "secondary", "tertiary", "unknown"],
+    "default": ["no", "yes"], "housing": ["no", "yes"],
+    "loan": ["no", "yes"], "contact": ["cellular", "telephone", "unknown"],
     "month": ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"],
-    "day_of_week": ["mon", "tue", "wed", "thu", "fri"],
-    "poutcome": ["failure", "nonexistent", "success"],
+    "poutcome": ["failure", "other", "success", "unknown"],
 }
 NUMERIC = {  # name: (default, minimum, maximum)
-    "age": (41, 17, 98), "campaign": (2, 1, 56), "pdays": (999, 0, 999), "previous": (0, 0, 7),
-    "emp.var.rate": (-1.8, -3.4, 1.4), "cons.price.idx": (92.893, 92.2, 94.8),
-    "cons.conf.idx": (-46.2, -50.8, -26.9), "euribor3m": (1.313, 0.6, 5.1),
-    "nr.employed": (5099.1, 4963, 5228),
+    "age": (41, 18, 95), "balance": (1500, -8019, 102127),
+    "day": (15, 1, 31), "campaign": (2, 1, 63),
+    "pdays": (-1, -1, 871), "previous": (0, 0, 275),
 }
 FIELDS = list(CATEGORICAL) + list(NUMERIC)
 

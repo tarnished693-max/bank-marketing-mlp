@@ -159,10 +159,10 @@ def categorise_error(row: pd.Series, threshold: float) -> str:
     if abs(p - threshold) < 0.10:
         return "borderline (score within 0.10 of threshold)"
     if y == 1:  # false negative
-        if row.get("pdays", 999) == 999 and row.get("poutcome") == "nonexistent":
+        if row.get("pdays", -1) in (-1, 999) and row.get("poutcome") in ("unknown", "nonexistent"):
             return "FN: first-time contact, no history to signal interest"
-        if row.get("emp.var.rate", 0) > 0:
-            return "FN: subscribed despite weak macro-economy (atypical)"
+        if row.get("balance", 0) < 0:
+            return "FN: subscribed despite negative account balance (atypical)"
         return "FN: other (rare positive profile)"
     # false positive
     if row.get("poutcome") == "failure":
