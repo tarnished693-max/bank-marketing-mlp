@@ -3,7 +3,7 @@
 Owner: Model Architect (Role 4). This module holds:
   * ``build_mlp``            - one flexible MLP builder (used by B, C and the ablations)
   * ``build_model_b``        - Model B: deeper MLP with Dropout regularization
-  * ``build_model_c``        - Model C: best MLP after tuning (config comes from the tuning runs)
+  * ``build_model_c``        - Model C: best MLP after tuning/ablations
   * ``hand_param_counts``    - layer-by-layer parameter formulas to compare with model.summary()
   * ``gradient_tape_demo``   - one manual training loop with tf.GradientTape
 
@@ -87,14 +87,12 @@ def build_model_b(input_dim: int, **overrides) -> keras.Model:
 
 
 def build_model_c(input_dim: int, best_config: Dict = None) -> keras.Model:
-    """Model C: best MLP after tuning.
+    """Model C: best MLP from validation ablations (64-32, Dropout 0.5, ReLU, He init).
 
-    ``best_config`` must be filled with the best validation configuration found
-    by the Experimentation Engineer. Until then it defaults to Model B plus
-    BatchNormalization.
+    Pass ``best_config`` to override any parameter after final tuning sweeps.
     """
-    cfg = dict(hidden_units=(128, 64, 32), dropout=0.3, activation="relu",
-               use_batchnorm=True, initializer="he_normal", l2=0.0, name="model_c")
+    cfg = dict(hidden_units=(64, 32), dropout=0.5, activation="relu",
+               use_batchnorm=False, initializer="he_normal", l2=0.0, name="model_c")
     if best_config:
         cfg.update(best_config)
     return build_mlp(input_dim, **cfg)
@@ -103,6 +101,7 @@ def build_model_c(input_dim: int, best_config: Dict = None) -> keras.Model:
 def hand_param_counts(
     input_dim: int,
     hidden_units: Sequence[int] = (128, 64, 32),
+    dropout: float = 0.3,
     use_batchnorm: bool = False,
 ) -> List[Dict]:
     """Compute the parameter count of every layer with the textbook formulas.
@@ -117,7 +116,8 @@ def hand_param_counts(
                      "params": n_in * units + units})
         if use_batchnorm:
             rows.append({"layer": "BatchNorm", "shape": (None, units), "params": 4 * units})
-        rows.append({"layer": "Dropout", "shape": (None, units), "params": 0})
+        if dropout > 0:
+            rows.append({"layer": "Dropout", "shape": (None, units), "params": 0})
         n_in = units
     rows.append({"layer": "Dense(1)", "shape": (None, 1), "params": n_in * 1 + 1})
     return rows
@@ -157,3 +157,15 @@ def gradient_tape_demo(model: keras.Model, x: np.ndarray, y: np.ndarray,
         if step % 10 == 0:
             print(f"step {step:3d}  loss = {losses[-1]:.4f}")
     return losses
+
+
+if __name__ == "__main__":
+    dim = 51
+    for label, mdl, units, drop, bn in [
+        ("Model A", build_model_a(dim), (32,), 0.0, False),
+        ("Model B", build_model_b(dim), (128, 64, 32), 0.3, False),
+        ("Model C", build_model_c(dim), (64, 32), 0.5, False),
+    ]:
+        rows = hand_param_counts(dim, hidden_units=units, dropout=drop, use_batchnorm=bn)
+        assert check_against_summary(mdl, rows)
+        print(f"{label}: params={mdl.count_params()} (hand check passed)")
