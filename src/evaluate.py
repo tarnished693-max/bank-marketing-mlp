@@ -1,4 +1,4 @@
-"""Evaluation utilities (Role 6: Evaluation & Deployment Engineer).
+"""Evaluation utilities.
 
 Framework-agnostic: every function works on ``y_true`` and predicted
 probabilities, so the same code evaluates the baselines (scikit-learn) and

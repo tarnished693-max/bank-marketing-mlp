@@ -1,4 +1,4 @@
-"""Gradio live demo on top of src.predict.Predictor (Role 6).
+"""Gradio live demo on top of src.predict.Predictor.
 
     python app/demo.py
 """

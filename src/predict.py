@@ -1,4 +1,4 @@
-"""Single-sample / batch inference on RAW input (Role 6).
+"""Single-sample / batch inference on RAW input.
 
 Re-uses the preprocessing object fitted at training time (saved with joblib),
 so no preprocessing logic is duplicated between training and inference.
