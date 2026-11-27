@@ -8,6 +8,8 @@ venv/
 # Raw Datasets (never commit large CSVs)
 data/*.csv
 data/*.zip
+data/raw/*
+!data/raw/.gitkeep
 
 # Saved Model Binaries
 *.h5
