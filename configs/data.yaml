@@ -1,0 +1,29 @@
+# Data-pipeline configuration. All paths are relative to the repository root.
+paths:
+  raw_csv: data/raw/bank-full.csv
+  processed_dir: data/processed
+  preprocessor: models/preprocessor.joblib
+
+dataset:
+  separator: ";"
+  target: y
+  positive_label: "yes"
+
+cleaning:
+  drop_duplicates: true
+  # 'duration' (last call length) is only known AFTER the call, and the call
+  # outcome is almost determined by it. Dropping it gives a realistic model.
+  drop_duration: true
+  # 'pdays' == -1 means "never contacted before": turn it into a flag + 0.
+  pdays_sentinel: -1
+  # Heavy-tailed numeric columns -> sign(x) * log1p(|x|) (stateless, no leakage)
+  log_cols: [balance, campaign, previous, pdays]
+
+split:
+  train: 0.70
+  val: 0.15
+  test: 0.15
+  seed: 42
+
+imbalance:
+  oversample_seed: 42
