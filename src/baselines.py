@@ -117,3 +117,39 @@ def print_metrics_summary(title, metrics):
     print(f"Confusion Matrix  : TN={metrics['confusion_matrix'][0][0]}, FP={metrics['confusion_matrix'][0][1]}")
     print(f"                    FN={metrics['confusion_matrix'][1][0]}, TP={metrics['confusion_matrix'][1][1]}")
     print(f"{'=' * 60}\n")
+
+
+def run_baselines(save_model: bool = True):
+    """Run both Week 10 baselines on the leak-free validation split."""
+    import joblib
+    import pandas as pd
+    from src.data import prepare_data, resolve_path
+
+    d = prepare_data(save=True)
+    trivial_metrics = evaluate_trivial_baseline(d.y_train, d.y_val)
+    clf, lr_metrics = evaluate_logistic_baseline(
+        d.X_train, d.y_train, d.X_val, d.y_val, class_weight="balanced", random_state=42
+    )
+    print_metrics_summary("1. Trivial Baseline (Validation)", trivial_metrics)
+    print_metrics_summary("2. Logistic Regression Baseline (Validation)", lr_metrics)
+
+    if save_model:
+        model_out = resolve_path("models/baseline_logreg.joblib")
+        model_out.parent.mkdir(parents=True, exist_ok=True)
+        joblib.dump(clf, model_out)
+        print(f"Saved logistic baseline to {model_out}")
+
+        summary = pd.DataFrame([
+            {k: v for k, v in m.items() if k != "confusion_matrix"}
+            for m in (trivial_metrics, lr_metrics)
+        ]).round(4)
+        csv_out = resolve_path("experiments/baselines_val.csv")
+        csv_out.parent.mkdir(parents=True, exist_ok=True)
+        summary.to_csv(csv_out, index=False)
+        print(f"Saved baseline summary to {csv_out}")
+
+    return trivial_metrics, lr_metrics
+
+
+if __name__ == "__main__":
+    run_baselines(save_model=True)

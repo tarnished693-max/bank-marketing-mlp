@@ -9,7 +9,7 @@
 [![Status](https://img.shields.io/badge/Milestone-Week_10_In_Progress-orange?style=for-the-badge)](#-project-roadmap)
 
 > **End-to-End Supervised Deep Learning Pipeline for Imbalanced Tabular Classification**  
-> **Bank Marketing Term Deposit Predictor** is a modular Multi-Layer Perceptron (MLP) system built on the **UCI Bank Marketing** dataset (`41,188` records). It predicts whether a retail bank client will subscribe to a term deposit (`y = 1`) using pre-call demographic, campaign, and macroeconomic indicators—combining leak-free preprocessing, class-imbalance mitigation, systematic ablation studies, and a live inference interface.
+> **Bank Marketing Term Deposit Predictor** is a modular Multi-Layer Perceptron (MLP) system built on the **UCI Bank Marketing** dataset (`45,211` records). It predicts whether a retail bank client will subscribe to a term deposit (`y = 1`) using pre-call demographic and campaign indicators—combining leak-free preprocessing, class-imbalance mitigation, systematic ablation studies, and a live inference interface.
 
 ---
 
@@ -36,7 +36,7 @@
 
 - **Modular Engineering Lifecycle**: Clean separation between data preprocessing (`src/data.py`), neural architectures (`src/models.py`), experiment execution (`src/train.py`), evaluation (`src/evaluate.py`), and single-sample inference (`src/predict.py`).
 - **Strict Zero-Leakage Discipline**: Excludes the post-call `duration` feature prior to modeling, enforces stratified `70/15/15` Train/Validation/Test splits before any transformation, and fits `StandardScaler` and `OneHotEncoder` strictly on training folds.
-- **Imbalance-Aware Optimization**: Addresses the severe `~88.7% No` vs. `~11.3% Yes` class skew using balanced class weighting and positive-class F1 / Recall / PR-AUC tracking.
+- **Imbalance-Aware Optimization**: Addresses the severe `~88.3% No` vs. `~11.7% Yes` class skew using balanced class weighting and positive-class F1 / Recall / PR-AUC tracking.
 - **Progressive MLP Architectures**: Compares trivial and linear baselines against three Keras MLP architectures of increasing complexity, backed by hand-verified parameter counts and a custom `tf.GradientTape` training step.
 - **Reproducible Experiment Tracking**: Logs every run, random seed, hyperparameter, and validation metric automatically into `experiments/experiment_log.csv`.
 
@@ -47,10 +47,10 @@
 | Component | Specification |
 | :--- | :--- |
 | **Target User** | Retail bank telemarketing campaign managers prioritizing outbound client calls |
-| **Dataset** | [UCI Bank Marketing (`bank-additional-full.csv`)](https://archive.ics.uci.edu/dataset/222/bank+marketing) — `41,188` rows, `19` pre-call features (`duration` dropped) |
+| **Dataset** | [UCI Bank Marketing (`bank-full.csv`)](https://archive.ics.uci.edu/dataset/222/bank+marketing) — `45,211` rows, `15` pre-call features (`duration` dropped) |
 | **Input & Output** | Scaled numeric + one-hot encoded categorical vector $\rightarrow$ Single `sigmoid` probability unit |
 | **Loss Function** | Binary Cross-Entropy (`binary_crossentropy`) with balanced class weights |
-| **Primary Metric** | **Positive-Class F1-Score, Recall & PR-AUC** (preferred over accuracy due to 88.7% majority skew) |
+| **Primary Metric** | **Positive-Class F1-Score, Recall & PR-AUC** (preferred over accuracy due to 88.3% majority skew) |
 | **Error Cost Trade-off** | False Negatives lose potential term deposit revenue; False Positives cost minor call-agent time |
 
 > [!IMPORTANT]
@@ -86,7 +86,7 @@ bank-marketing-mlp/
 ```mermaid
 flowchart LR
     A[Raw CSV
-41,188 rows] --> B[Drop 'duration'
+45,211 rows] --> B[Drop 'duration'
 & Duplicates]
     B --> C[Stratified Split
 70% Train / 15% Val / 15% Test]
@@ -122,37 +122,25 @@ pip install -r requirements.txt
 ```
 
 ### 2. Configure Dataset
-1. Download and extract `bank-additional.zip` from the [UCI Machine Learning Repository](https://archive.ics.uci.edu/dataset/222/bank+marketing).
-2. Place `bank-additional-full.csv` inside `data/bank-additional-full.csv` (ignored by Git automatically).
+Run the download script to fetch `bank-full.csv` from the [UCI Machine Learning Repository](https://archive.ics.uci.edu/dataset/222/bank+marketing) into `data/raw/bank-full.csv` (ignored by Git automatically), then run the preprocessing pipeline:
+```powershell
+python data/download_data.py
+python -m src.data
+```
 
 ### 3. Run Training, Evaluation & Demo
 ```powershell
 # Train an experiment configuration and log validation metrics
-python -m src.train --config configs/baseline.yaml
-### Experiment Configuration
-
-The training script supports custom experiment configurations and random seed overrides.
-
-To override the random seed:
-
-```bash
-python -m src.train --config configs/baseline.yaml --seed 123
-```
-
-The random seed helps control experiment reproducibility.
+python -m src.run_experiment --config configs/reference.json --author Ahmed
+python -m src.run_ablations
 
 # Evaluate the frozen model on the held-out test set
-python -m src.evaluate --model models/final_mlp.keras
+python -m src.evaluate --model models/final_mlp.keras --split test --final
 
 # Run single-sample CLI inference or launch the Gradio web demo
 python -m src.predict --input configs/sample_client.json
 python app/demo.py
-
 ```
-
-```
-
-The random seed helps control experiment reproducibility.
 
 ---
 
@@ -161,7 +149,7 @@ The random seed helps control experiment reproducibility.
 | Milestone | Target | Deliverables | Status |
 | :--- | :---: | :--- | :---: |
 | **1. Proposal & Setup** | Week 9 | Problem formulation, dataset validation, primary metric, modular GitHub repo | ✅ **Done** |
-| **2. EDA & Baselines** | Week 10 | Exploratory data analysis notebook, leak-free splits, trivial & linear baselines | 🔄 **In Progress** |
+| **2. EDA & Baselines** | Week 10 | Exploratory data analysis notebook, leak-free splits, trivial & linear baselines | ✅ **Done** |
 | **3. Neural Models** | Weeks 11–12 | Models A, B, and C implemented in Keras, hand parameter counts, `GradientTape` | ⏳ Planned |
 | **4. Tuning & Ablations** | Week 13 | Hyperparameter studies, 4 ablation experiments, 3-seed run, error analysis | ⏳ Planned |
 | **5. Final Delivery** | Week 14 | Tagged `v1.0` repository, technical report PDF, slides, and live demo | ⏳ Planned |

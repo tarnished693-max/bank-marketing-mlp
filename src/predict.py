@@ -22,6 +22,8 @@ import joblib
 import numpy as np
 import pandas as pd
 
+from src.data import PREVIOUSLY_CONTACTED, clean_features, load_config
+
 ROOT = Path(__file__).resolve().parents[1]
 MODELS_DIR = ROOT / "models"
 DEFAULT_MODEL = MODELS_DIR / "final_mlp.keras"
@@ -35,11 +37,14 @@ class Predictor:
 
     def __init__(self, model_path: Path = DEFAULT_MODEL,
                  preprocessor_path: Path = DEFAULT_PREPROCESSOR,
-                 threshold_file: Path = THRESHOLD_FILE):
+                 threshold_file: Path = THRESHOLD_FILE,
+                 data_cfg: Dict = None):
         self.model_path = Path(model_path)
         self.preprocessor_path = Path(preprocessor_path)
         self.preprocessor = joblib.load(self.preprocessor_path)
         self.required = list(self.preprocessor.feature_names_in_)
+        self.uses_data_cleaning = PREVIOUSLY_CONTACTED in self.required
+        self.data_cfg = data_cfg or load_config()
         self.threshold = 0.5
         if Path(threshold_file).exists():
             self.threshold = float(json.loads(Path(threshold_file).read_text())["threshold"])
@@ -51,7 +56,10 @@ class Predictor:
 
     def _to_frame(self, raw: Union[Dict, List[Dict], pd.DataFrame]) -> pd.DataFrame:
         df = pd.DataFrame([raw]) if isinstance(raw, dict) else pd.DataFrame(raw)
-        df = df.drop(columns=[c for c in LEAKY_COLUMNS if c in df.columns])
+        if self.uses_data_cleaning:
+            df = clean_features(df, self.data_cfg)
+        else:
+            df = df.drop(columns=[c for c in LEAKY_COLUMNS if c in df.columns])
         missing = [c for c in self.required if c not in df.columns]
         if missing:
             raise ValueError(f"Missing required fields: {missing}")
