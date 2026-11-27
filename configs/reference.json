@@ -1,0 +1,19 @@
+{
+  "model": "mlp",
+  "hidden_units": [64, 32],
+  "activation": "relu",
+  "dropout": 0.3,
+  "optimizer": "adam",
+  "learning_rate": 0.001,
+  "batch_size": 256,
+  "epochs": 100,
+  "patience": 8,
+  "use_class_weights": true,
+  "seed": 42,
+  "sweeps": {
+    "learning_rate": [0.01, 0.001, 0.0001],
+    "batch_size": [64, 256, 1024],
+    "optimizer": ["sgd", "sgd_momentum", "adam"],
+    "hidden_units": [[32], [64, 32], [128, 64, 32]]
+  }
+}
